@@ -8,18 +8,18 @@ V 0.1 (8/11/2017): primera versión del programa, incorpora control de motores p
 #include "escornabot.h"
 
 // Declaración y asignación de variables privadas
-	
+
 int step [4][4] =//matriz que describe puesta en marcha de bobinas por defecto (4 posiciones)
 		{
 	  	{1, 0, 0, 0},
 	  	{0, 1, 0, 0},
 	  	{0, 0, 1, 0},
 	  	{0, 0, 0, 1}
-		};	
+		};
 
 	int stepsLap=2048;//nº de pasos que da en una vuelta
 	int stepsDone=0;//cuenta los pasos dados
-	int coilPosition=0;// devuelve la posición de la bobina en cada paso (4 posiciones)      
+	int coilPosition=0;// devuelve la posición de la bobina en cada paso (4 posiciones)
 
 /*Pinout*/
 const int pinMotor[8]={2,3,4,5,6,7,8,9};//pines de motores
@@ -28,7 +28,7 @@ const int led[4] = {14,15,16,17}; // 1 Azul, blue;2 Rojo, red;3 Amarillo, yellow
 const int pushButtons = A7; //Es una variable analógica. En un circuito paralelo que en función de la tecla que pulsemos obtenemos un valor analógico distinto
 
 /*Valores aproximados que se obtienen al accionar los pulsadores*/
-int up = 768; 
+int up = 768;
 int down = 512;
 int left = 882;
 int right = 683;
@@ -43,10 +43,10 @@ int center = 819;
 escornabot::escornabot() //si no se pasan prámetros al constructor por defecto coge el paso 1 (1 sóla bobina a la vez)
 {
 //se inicializa las comunicaciones serie a 9600 baudios (para bluetooth)
-	Serial.begin (9600);//iniciamos las comunicaciones 
+	Serial.begin (9600);//iniciamos las comunicaciones
 //se definen los pines de motores de escornabot como de salida
 	for (int i=0;i<8;i++) {
-		pinMode(pinMotor [i],OUTPUT); 
+		pinMode(pinMotor [i],OUTPUT);
 	}
 //se definen los pines de los leds como salida
 	for(int i=0; i<4; i++){
@@ -66,10 +66,10 @@ escornabot::escornabot() //si no se pasan prámetros al constructor por defecto 
 escornabot::escornabot(int kindStep) //aquí se construye el objeto escornabot con el tipo de paso (excitación de bobinas) 1 o 2
 {
 //se inicializa las comunicaciones serie a 9600 baudios (para bluetooth)
-	Serial.begin (9600);//iniciamos las comunicaciones 
+	Serial.begin (9600);//iniciamos las comunicaciones
 //se definen los pines de motores de escornabot como de salida
 	for (int i=0;i<8;i++) {
-		pinMode(pinMotor [i],OUTPUT); 
+		pinMode(pinMotor [i],OUTPUT);
 	}
 //se definen los pines de los leds como salida
 	for(int i=0; i<4; i++){
@@ -79,7 +79,7 @@ escornabot::escornabot(int kindStep) //aquí se construye el objeto escornabot c
     pinMode(buzz, OUTPUT);
 // se define el pin analógico de entrada de pulsadores tipo PULL UP
   	pinMode(pushButtons,INPUT_PULLUP);
-//comprueba el parámetro pasado de tipo de paso de bobina	
+//comprueba el parámetro pasado de tipo de paso de bobina
 
 	if (kindStep==1) {// se excita una bobina cada vez
 		int step [4][4] =//matriz que describe orden de excitación de bobinas (4 posiciones)
@@ -139,7 +139,7 @@ void escornabot::drive (float laps, int speed) {//vueltas son el nº de vueltas 
       		digitalWrite(pinMotor[7], step[coilPosition][0]);
       		delayMicroseconds(29297/speed);
     	}
-  
+
 	}
 
 }//drive
@@ -195,13 +195,13 @@ void escornabot::turn (float laps, int speed) {//vueltas son el nº de vueltas a
 			digitalWrite(pinMotor[7], step[coilPosition][0]);
 			delayMicroseconds(29297/speed);
 		}
-  
+
 	}
 
 }//turn
 
 /*
- *ledON procedimiento para encender leds 
+ *ledON procedimiento para encender leds
  * */
 void escornabot::ledON(int ledNumber){
   digitalWrite(led[ledNumber-1], HIGH);
@@ -213,6 +213,13 @@ void escornabot::ledON(int ledNumber){
 void escornabot::ledOFF(int ledNumber){
   digitalWrite(led[ledNumber-1], LOW);
 }//ledOFF
+
+/*
+* ledState procedimiento para ver el estado del led ledNumber
+*/
+int  escornabot::ledState(int ledNumber){
+  return digitalRead(led[ledNumber-1]);
+}
 
 /*
  * buzzON procedimiento para encender zumbador
@@ -248,7 +255,7 @@ int escornabot::pushButton(void){
     return 5;
   }
   else {
-    return 0;     
+    return 0;
   }
 }//pushButton
 
@@ -267,7 +274,6 @@ else return 0;
 /*
   version() procedimiento que devuelve la versión de la librería
 */
-int escornabot::version(void)
-{
+int escornabot::version(void){
   return 0.1;
 }
